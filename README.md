@@ -327,20 +327,6 @@ The Flask backend will automatically communicate with the local model.
 
 ---
 
-## 🔜 Future Roadmap
-
-- Voice Learning
-- OCR Support
-- Multi-language Support
-- AI Exam Evaluation
-- Vision OMR Integration
-- Assignment Evaluation
-- Research Assistant
-- Mobile Application
-- Cloud Synchronization
-- Collaborative Learning
-
----
 
 ## 🎯 Use Cases
 
@@ -354,13 +340,6 @@ The Flask backend will automatically communicate with the local model.
 
 ---
 
-## 🤝 Contributors
-
-**Team Studiora AI**
-- Shrikant
-- Team Members
-
----
 
 ## 📜 License
 
