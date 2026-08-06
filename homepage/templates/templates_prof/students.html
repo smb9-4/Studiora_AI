@@ -1,0 +1,53 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}Students - Studiora AI Professor Dashboard{% endblock %}
+{% block page_title %}Student Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>👥 Registered Students</h1>
+    <p>View and manage students enrolled in your courses.</p>
+    <div class="summary-card">
+        <span class="summary-label">Total Students</span>
+        <strong class="summary-value">{{ students | length }}</strong>
+    </div>
+</div>
+
+<!-- Search bar (UI only — filters client-side) -->
+<div class="search-bar">
+    <input type="text" id="student-search" placeholder="🔍 Search by name, email, or department...">
+</div>
+
+<div class="table-wrapper">
+    <table id="students-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>{{ student.username }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.department }}</td>
+                <td>
+                    <span class="status-badge {% if student.status == 'Active' %}status-active{% else %}status-inactive{% endif %}">
+                        {{ student.status }}
+                    </span>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="empty-state">📂 No students registered yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

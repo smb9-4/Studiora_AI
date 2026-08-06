@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Studiora AI Professor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="login-brand">
+                <div class="login-logo">SO</div>
+                <h1>Studiora AI</h1>
+                <p>Professor Dashboard</p>
+            </div>
+
+            <!-- Login form — navigates to dashboard on submit (no real auth) -->
+            <form class="login-form" action="{{ url_for('dashboard') }}" method="get">
+                <div class="form-group">
+                    <label for="email">Professor Email</label>
+                    <input type="email" id="email" name="email"
+                           placeholder="professor@university.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

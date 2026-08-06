@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }} – Studiora AI</title>
+  <link rel="stylesheet" href="{{ url_for('student_static', filename='css/style-2.css') }}">
+  <link rel="stylesheet" href="{{ url_for('student_static', filename='css/style-1.css') }}">
+  <link rel="stylesheet" href="{{ url_for('student_static', filename='css/shared_effects.css') }}">
+  <link rel="stylesheet" href="{{ url_for('student_static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div id="cursor-glow" class="cursor-glow"></div>
+  <canvas id="aurora-canvas" class="fixed-canvas"></canvas>
+  <canvas id="mouse-trail" class="fixed-canvas" style="z-index:9996"></canvas>
+  <canvas id="particles-canvas" class="fixed-canvas" style="z-index:2; opacity:0.6"></canvas>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="app-sidebar-header">
+        <a href="{{ url_for('student_dashboard') }}" class="sidebar-logo">
+          <div class="logo-icon">S</div>
+          <span class="logo-text">Studiora AI</span>
+        </a>
+      </div>
+
+      <nav class="app-sidebar-nav">
+        <div class="sidebar-section-label">Main</div>
+        <a href="{{ url_for('student_dashboard') }}" class="sidebar-link {% if active_page == 'dashboard' %}active{% endif %}">
+          <span class="link-icon">🏠</span> Dashboard
+        </a>
+
+        <div class="sidebar-section-label">📚 Learning</div>
+        <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="sidebar-link">
+          <span class="link-icon">🤖</span> AI Chat
+        </a>
+        <a href="{{ url_for('student_documents') }}" class="sidebar-link {% if active_page == 'documents' %}active{% endif %}">
+          <span class="link-icon">📁</span> My Documents
+        </a>
+        <a href="{{ url_for('student_history') }}" class="sidebar-link {% if active_page == 'history' %}active{% endif %}">
+          <span class="link-icon">📖</span> Learning History
+        </a>
+
+        <div class="sidebar-section-label">⚙️ Account</div>
+        <a href="{{ url_for('student_profile') }}" class="sidebar-link {% if active_page == 'profile' %}active{% endif %}">
+          <span class="link-icon">👤</span> Profile
+        </a>
+        <a href="{{ url_for('student_help') }}" class="sidebar-link {% if active_page == 'help' %}active{% endif %}">
+          <span class="link-icon">❓</span> Help & Support
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="{{ url_for('student_profile') }}" class="sidebar-user">
+          <div class="sidebar-avatar" id="sidebar-avatar">{{ user.initials }}</div>
+          <span class="sidebar-user-name">{{ user.name }}</span>
+        </a>
+        <a href="{{ url_for('student_logout') }}" class="sidebar-logout">
+          <span class="link-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main -->
+    <div class="app-main">
+      <header class="app-navbar">
+        <div class="app-navbar-left">
+          <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+          <h1 class="app-page-title">{{ page_title }}</h1>
+        </div>
+        <div class="app-navbar-right">
+          <button class="navbar-icon-btn" title="Notifications">🔔</button>
+          <button class="navbar-icon-btn" title="Search">🔍</button>
+        </div>
+      </header>
+
+      <main class="app-content {% block content_class %}{% endblock %}">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="{{ url_for('student_static', filename='js/shared_effects.js') }}"></script>
+  <script src="{{ url_for('student_static', filename='js/script.js') }}"></script>
+  <script>
+    MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, options: { enableMenu: false } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,43 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}Preview - {{ document.name }}{% endblock %}
+{% block page_title %}Document Preview{% endblock %}
+
+{% block content %}
+<div class="preview-header">
+    <div>
+        <h1 style="margin:0 0 6px;font-size:22px;">{{ document.name }}</h1>
+        <p style="margin:0;color:#9ca3af;font-size:14px;">Uploaded by {{ document.student }}</p>
+    </div>
+    <a href="{{ url_for('documents') }}" class="btn btn-secondary">← Back to Documents</a>
+</div>
+
+<!-- File information -->
+<div class="preview-meta">
+    <div class="meta-item">
+        <label>File Name</label>
+        <span>{{ document.name }}</span>
+    </div>
+    <div class="meta-item">
+        <label>File Type</label>
+        <span>{{ document.type }}</span>
+    </div>
+    <div class="meta-item">
+        <label>File Size</label>
+        <span>{{ document.size }}</span>
+    </div>
+    <div class="meta-item">
+        <label>Upload Date</label>
+        <span>{{ document.uploaded }}</span>
+    </div>
+    <div class="meta-item">
+        <label>Uploaded By</label>
+        <span>{{ document.student }}</span>
+    </div>
+</div>
+
+<!-- Placeholder viewer -->
+<div class="preview-viewer">
+    Document Preview Placeholder
+</div>
+{% endblock %}

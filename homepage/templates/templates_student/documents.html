@@ -1,0 +1,72 @@
+{% extends "templates_student/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h1>My Documents</h1>
+  <p>Manage and access all your uploaded study materials.</p>
+</div>
+
+<!-- Search & Filter Toolbar -->
+<div class="toolbar">
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" placeholder="Search documents..." id="doc-search">
+  </div>
+  <div class="filter-bar">
+    <select class="form-select" id="doc-filter">
+      <option value="all">All Types</option>
+      <option value="PDF">PDF</option>
+      <option value="DOCX">DOCX</option>
+      <option value="TXT">TXT</option>
+    </select>
+  </div>
+</div>
+
+<!-- Documents Table -->
+<div class="data-table-wrap glass-card">
+  {% if documents %}
+  <table class="data-table" id="documents-table">
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>File Type</th>
+        <th>Upload Date</th>
+        <th>File Size</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for doc in documents %}
+      <tr data-type="{{ doc.type }}" data-name="{{ doc.name|lower }}">
+        <td>📄 {{ doc.name }}</td>
+        <td><span class="file-type-badge file-type-{{ doc.type|lower }}">{{ doc.type }}</span></td>
+        <td>{{ doc.date }}</td>
+        <td>{{ doc.size }}</td>
+        <td>
+          <div class="table-actions">
+            <button class="btn-sm btn-view" type="button">View</button>
+            <button class="btn-sm btn-delete" type="button">Delete</button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state" style="padding: 3rem 2rem; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+    <h3 style="margin-bottom: 0.5rem;">No documents yet</h3>
+    <p style="color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;">Upload your first study material to get started</p>
+    <a href="{{ url_for('student_documents') }}" class="btn-primary" style="display: inline-flex;">Upload Document →</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initDocumentsPage === 'function') initDocumentsPage();
+  });
+</script>
+{% endblock %}

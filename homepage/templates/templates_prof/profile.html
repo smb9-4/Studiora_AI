@@ -1,0 +1,163 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}Profile - Studiora AI Professor Dashboard{% endblock %}
+{% block page_title %}Profile & Settings{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Profile & Settings</h1>
+    <p>Manage your account information and preferences.</p>
+</div>
+
+<div class="profile-grid">
+    <!-- Profile information -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2 class="panel-title">👤 Profile Information</h2>
+        </div>
+
+        <div class="form-group">
+            <label for="profile-name">Name</label>
+            <input type="text" id="profile-name" value="{{ profile.name }}">
+        </div>
+
+        <div class="form-group">
+            <label for="profile-email">Email</label>
+            <input type="email" id="profile-email" value="{{ profile.email }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="profile-department">Department</label>
+            <input type="text" id="profile-department" value="{{ profile.department }}">
+        </div>
+    </div>
+
+    <!-- Change password -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2 class="panel-title">🔑 Change Password</h2>
+        </div>
+
+        <div class="form-group">
+            <label for="current-password">Current Password</label>
+            <input type="password" id="current-password" placeholder="Enter current password">
+        </div>
+
+        <div class="form-group">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password" placeholder="Enter new password">
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">Confirm New Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm new password">
+        </div>
+    </div>
+
+    <!-- Preferences -->
+    <!-- <div class="panel">
+        <div class="panel-header">
+            <h2 class="panel-title">Preferences</h2>
+        </div>
+
+        <div class="toggle-row">
+            <div class="toggle-label">
+                <span>Email Notifications</span>
+                <small>Receive alerts for new student uploads</small>
+            </div>
+            <button type="button" class="toggle-switch active" aria-label="Toggle notifications"></button>
+        </div>
+
+        <div class="toggle-row">
+            <div class="toggle-label">
+                <span>AI Chat Alerts</span>
+                <small>Get notified when AI usage spikes</small>
+            </div>
+            <button type="button" class="toggle-switch" aria-label="Toggle AI alerts"></button>
+        </div>
+    </div> -->
+
+    <!-- Save -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2 class="panel-title">💾 Save Changes</h2>
+        </div>
+        <p style="color:#9ca3af;font-size:14px;margin:0 0 16px;">
+            Review your changes and click save. Your changes will be stored in the database.
+        </p>
+        <button type="button" id="save-profile">Save</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const PROFESSOR_PROFILE_GET = '{{ url_for('api_get_professor_profile') }}';
+const PROFESSOR_PROFILE_SAVE = '{{ url_for('api_update_professor_profile') }}';
+
+async function loadProfessorProfile() {
+    try {
+        const res = await fetch(PROFESSOR_PROFILE_GET, { credentials: 'same-origin' });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            const profile = data.profile || {};
+            document.getElementById('profile-name').value = profile.name || '';
+            document.getElementById('profile-email').value = profile.email || '';
+            document.getElementById('profile-department').value = profile.department || '';
+        }
+    } catch (err) {
+        console.error('Could not load profile', err);
+    }
+}
+
+async function saveProfessorProfile() {
+    const name = document.getElementById('profile-name').value.trim();
+    const department = document.getElementById('profile-department').value.trim();
+    const currentPassword = document.getElementById('current-password').value.trim();
+    const newPassword = document.getElementById('new-password').value.trim();
+    const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+    if (!name) {
+        return alert('Name is required.');
+    }
+    if (!department) {
+        return alert('Department is required.');
+    }
+    if ((newPassword || confirmPassword) && newPassword !== confirmPassword) {
+        return alert('New passwords do not match.');
+    }
+
+    try {
+        const res = await fetch(PROFESSOR_PROFILE_SAVE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name,
+                department,
+                current_password: currentPassword,
+                new_password: newPassword,
+                confirm_password: confirmPassword,
+            }),
+            credentials: 'same-origin',
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            return alert(data.error || 'Unable to save profile.');
+        }
+        alert('Saved successfully');
+        window.location.reload();
+    } catch (err) {
+        console.error(err);
+        alert('Unable to save profile. Please try again.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadProfessorProfile();
+    const saveBtn = document.getElementById('save-profile');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveProfessorProfile);
+    }
+});
+</script>
+{% endblock %}

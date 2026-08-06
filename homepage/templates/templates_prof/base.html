@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Studiora AI Professor Dashboard{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('professor_static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='shared_effects.css') }}">
+</head>
+<body>
+    <div id="prof-chat-data" data-username="{{ session.get('username', '') }}" data-name="{{ session.get('name', '') }}" style="display:none"></div>
+    <div class="noise-overlay"></div>
+    <div id="cursor-glow" class="cursor-glow"></div>
+    <canvas id="aurora-canvas" class="fixed-canvas"></canvas>
+    <canvas id="mouse-trail" class="fixed-canvas" style="z-index:9996"></canvas>
+    <canvas id="particles-canvas" class="fixed-canvas" style="z-index:2; opacity:0.6"></canvas>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">SO</div>
+                <div class="sidebar-brand-text">
+                    <h2>Studiora AI</h2>
+                    <span>Professor Dashboard</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-label">Navigation</span>
+
+                <a href="{{ url_for('dashboard') }}"
+                   class="sidebar-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <span class="icon">🏠</span> Dashboard
+                </a>
+                <a href="{{ url_for('students') }}"
+                   class="sidebar-link {% if active_page == 'students' %}active{% endif %}">
+                    <span class="icon">👥</span> Students
+                </a>
+                <a href="{{ url_for('documents') }}"
+                   class="sidebar-link {% if active_page == 'documents' %}active{% endif %}">
+                    <span class="icon">📁</span> Documents
+                </a>
+                <a href="#" onclick="openProfChat(); return false;" class="sidebar-link">
+                    <span class="icon">🤖</span> AI Chat
+                </a>
+                <a href="{{ url_for('activity') }}"
+                   class="sidebar-link {% if active_page == 'activity' %}active{% endif %}">
+                    <span class="icon">📈</span> Activity
+                </a>
+                <a href="{{ url_for('profile') }}"
+                   class="sidebar-link {% if active_page == 'profile' %}active{% endif %}">
+                    <span class="icon">👤</span> Profile
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">{{ session.get('name', 'Professor')[:2]|upper }}</div>
+                    <div class="sidebar-user-info">
+                        {{ session.get('name', 'Professor') }}
+                        <span>Professor</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('logout') }}" class="sidebar-link logout-link">
+                    <span class="icon">🚪</span> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="main">
+            <header class="navbar">
+                <h1 class="navbar-title">{% block page_title %}Dashboard{% endblock %}</h1>
+                <div class="navbar-actions">
+                    <div class="navbar-badge">
+                        <span class="status-dot"></span>
+                        System Online
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='shared_effects.js') }}"></script>
+    <script src="{{ url_for('professor_static', filename='js/script.js') }}"></script>
+    <script>
+    function openProfChat() {
+      var el = document.getElementById('prof-chat-data');
+      if (!el) return;
+      fetch('http://localhost:5002/api/auth/auto-login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: el.dataset.username, name: el.dataset.name})
+      }).then(function(r) { return r.json(); }).then(function(d) {
+        if (d.success && d.token) window.open('http://localhost:5002/?token=' + d.token, '_blank');
+        else if (d.success) window.open('http://localhost:5002/', '_blank');
+      }).catch(function() { window.open('http://localhost:5002/', '_blank'); });
+    }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

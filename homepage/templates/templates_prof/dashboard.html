@@ -1,0 +1,111 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}Dashboard - Studiora AI Professor Dashboard{% endblock %}
+{% block page_title %}Dashboard Home{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Welcome back, {{ session.get('name', 'Professor') }}</h1>
+    <p>Overview of your course activity and student engagement.</p>
+</div>
+
+<!-- Stat cards -->
+<div class="card-grid">
+    <div class="stat-card">
+        <div class="stat-card-icon">👥</div>
+        <div class="stat-card-label">Total Students</div>
+        <p class="stat-card-value">{{ stats.total_students }}</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-icon">📁</div>
+        <div class="stat-card-label">Total Documents</div>
+        <p class="stat-card-value">{{ stats.total_documents }}</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-icon">🤖</div>
+        <div class="stat-card-label">AI Chats (Professor)</div>
+        <p class="stat-card-value">{{ stats.prof_ai_chats or stats.total_ai_chats }}</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-icon">📝</div>
+        <div class="stat-card-label">AI Generated Docs</div>
+        <p class="stat-card-value">{{ stats.prof_docs or 0 }}</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-icon">📤</div>
+        <div class="stat-card-label">Uploads to AI</div>
+        <p class="stat-card-value">{{ stats.prof_uploads or 0 }}</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-icon">📈</div>
+        <div class="stat-card-label">Active Today</div>
+        <p class="stat-card-value">{{ stats.active_today }}</p>
+    </div>
+</div>
+
+<!-- Quick stats panel -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">📊 Quick Stats</h2>
+    </div>
+    <div class="quick-stats">
+        <div class="quick-stat-item">
+            <div class="value">{{ stats.documents_this_week }}</div>
+            <div class="label">Documents This Week</div>
+        </div>
+        <div class="quick-stat-item">
+            <div class="value">{{ stats.avg_chat_session_min }} min</div>
+            <div class="label">Avg. Chat Session</div>
+        </div>
+        <div class="quick-stat-item">
+            <div class="value">94%</div>
+            <div class="label">Student Engagement</div>
+        </div>
+        <div class="quick-stat-item">
+            <div class="value">4.8</div>
+            <div class="label">Avg. AI Rating</div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent activity -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">🕐 Recent Activity</h2>
+    </div>
+    <ul class="activity-list">
+        {% for item in recent_activity %}
+        <li class="activity-item">
+            <div class="activity-icon">
+                {% if item.type == 'upload' %}📄
+                {% elif item.type == 'chat' %}💬
+                {% else %}👤{% endif %}
+            </div>
+            <div class="activity-text">
+                <p>{{ item.text }}</p>
+                <span>{{ item.time }}</span>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- AI Assistant CTA -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">🤖 Professor AI Assistant</h2>
+    </div>
+    <div style="padding:1.5rem; text-align:center;">
+        <p style="color:rgba(255,255,255,0.5); margin-bottom:1.25rem; line-height:1.7;">
+            Generate quizzes, assignments, lesson plans, and get AI-powered insights from your course materials.
+        </p>
+        <a href="#" onclick="openProfChat(); return false;"
+           style="display:inline-flex; align-items:center; gap:0.625rem; padding:0.875rem 2rem; border-radius:0.75rem;
+                  background:linear-gradient(135deg, #7c3aed, #9333ea); color:#fff; font-weight:600; text-decoration:none;
+                  border:1px solid rgba(255,255,255,0.12); box-shadow:0 12px 30px rgba(124,58,237,0.15);
+                  transition:transform 0.2s, box-shadow 0.2s;">
+            Open AI Assistant →
+        </a>
+    </div>
+</div>
+{% endblock %}

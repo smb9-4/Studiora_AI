@@ -1,0 +1,79 @@
+{% extends "templates_student/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Help & Support</h1>
+  <p>Find answers to common questions or reach out to our support team.</p>
+</div>
+
+<!-- Help Categories -->
+<div class="help-grid">
+  {% for cat in help_categories %}
+  <div class="glass-card help-category-card">
+    <div class="help-category-icon">{{ cat.icon }}</div>
+    <h4 class="card-title">{{ cat.title }}</h4>
+    <p class="card-desc">{{ cat.desc }}</p>
+  </div>
+  {% else %}
+  <div class="glass-card help-category-card" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+    <p style="color: rgba(255,255,255,0.5);">No help categories available</p>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="dashboard-grid">
+  <!-- FAQ Section -->
+  <div class="glass-card">
+    <h3 class="card-section-title">❓ Frequently Asked Questions</h3>
+    <div id="faq-list">
+      {% for faq in faqs %}
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          {{ faq.q }}
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer">{{ faq.a }}</div>
+      </div>
+      {% else %}
+      <div class="empty-state" style="padding: 2rem; text-align: center;">
+        <p style="color: rgba(255,255,255,0.5);">No FAQs available</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Contact & Feedback -->
+  <div class="glass-card">
+    <h3 class="card-section-title">📧 Contact Support</h3>
+    <form id="support-form" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label">Your Email</label>
+        <input type="email" class="form-input" placeholder="your.email@university.edu" value="{{ user.email or '' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input type="text" class="form-input" placeholder="How can we help?">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Describe your issue or question..."></textarea>
+      </div>
+      <button class="btn-primary" type="button" id="support-submit">Submit</button>
+    </form>
+
+    <h3 class="card-section-title" style="margin-top: 2rem;">💬 Feedback</h3>
+    <div class="form-group">
+      <textarea class="form-textarea" id="feedback-text" placeholder="Share your feedback about Studiora AI..."></textarea>
+    </div>
+    <button class="btn-secondary" type="button" id="feedback-submit">Send Feedback</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initHelpPage === 'function') initHelpPage();
+  });
+</script>
+{% endblock %}

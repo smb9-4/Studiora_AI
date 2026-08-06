@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studiora AI - Professor Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}" />
+  <style>
+    .auth-secondary-btn {
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.95rem 1rem;
+      margin-top: 0.75rem;
+      border-radius: 0.9rem;
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .auth-secondary-btn:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-1px);
+    }
+    .auth-note {
+      margin-top: 1rem;
+      text-align: center;
+      color: rgba(255,255,255,0.65);
+    }
+    .auth-note a { color: #00d4ff; text-decoration: none; }
+  </style>
+</head>
+<body class="auth-body">
+
+<!-- Noise Overlay -->
+<div class="noise-overlay"></div>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress" class="scroll-progress"></div>
+
+<!-- Cursor Glow -->
+<div id="cursor-glow" class="cursor-glow"></div>
+
+<!-- Canvas Effects -->
+<canvas id="aurora-canvas" class="fixed-canvas"></canvas>
+<canvas id="mouse-trail" class="fixed-canvas" style="z-index:9996"></canvas>
+<canvas id="particles-canvas" class="fixed-canvas" style="z-index:0; opacity:0.6"></canvas>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <a href="{{ url_for('landing') }}" class="auth-logo">
+      <div class="logo-icon">S</div>
+      <span class="logo-text">Studiora <span class="text-neon">AI</span></span>
+    </a>
+
+    <div class="role-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Professor Sign Up</span>
+    </div>
+
+    <form id="signup-form" class="auth-form" onsubmit="return handleSignup(event)">
+      <input type="hidden" name="role" value="professor" />
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" autocomplete="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="new-password" />
+      </div>
+
+      <div class="form-group">
+        <label for="password_confirm">Confirm Password</label>
+        <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirm your password" autocomplete="new-password" />
+      </div>
+
+      <p id="signup-error" class="auth-error hidden"></p>
+
+      <button type="submit" id="signup-submit" class="auth-submit">Sign Up</button>
+    </form>
+
+    <p class="auth-note">
+      Already have an account? <a href="{{ url_for('professor_login') }}">Log in</a>
+    </p>
+
+    <a href="{{ url_for('landing') }}" class="auth-back">&larr; Back to Home</a>
+  </div>
+</div>
+
+<div class="noise-overlay"></div>
+
+<script>
+async function handleSignup(e) {
+  e.preventDefault();
+  const error = document.getElementById('signup-error');
+  error.classList.add('hidden');
+
+  const form = document.getElementById('signup-form');
+  const formData = new FormData(form);
+  const password = formData.get('password').trim();
+  const passwordConfirm = formData.get('password_confirm').trim();
+
+  if (!formData.get('name').trim() || !formData.get('email').trim() || !password) {
+    error.textContent = 'Name, email, and password are required.';
+    error.classList.remove('hidden');
+    return false;
+  }
+
+  if (password !== passwordConfirm) {
+    error.textContent = 'Passwords do not match.';
+    error.classList.remove('hidden');
+    return false;
+  }
+
+  const btn = document.getElementById('signup-submit');
+  btn.disabled = true;
+  btn.textContent = 'Creating account...';
+
+  try {
+    const res = await fetch('{{ url_for("api_register") }}', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (!res.ok) {
+      error.textContent = data.error || 'Unable to create account.';
+      error.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = 'Sign Up';
+      return false;
+    }
+
+    window.location.href = '{{ url_for("professor_login") }}';
+  } catch (err) {
+    error.textContent = 'Network error. Please try again.';
+    error.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = 'Sign Up';
+  }
+
+  return false;
+}
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends "templates_student/base.html" %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="welcome-banner reveal">
+  <h2>Welcome back, {{ user.name.split(' ')[0] if user.name else 'Student' }}! 👋</h2>
+  <p>Here's your learning overview. Keep up the great progress!</p>
+</div>
+
+<!-- Quick Statistics -->
+<div class="stats-grid">
+  <div class="stat-card glass-card reveal">
+    <div class="stat-icon">📈</div>
+    <div class="stat-value">{{ stats.learning_progress or 0 }}%</div>
+    <div class="stat-label">Learning Progress</div>
+    <div class="stat-progress-bar">
+      <div class="stat-progress-fill" style="width: {{ stats.learning_progress or 0 }}%"></div>
+    </div>
+  </div>
+  <div class="stat-card glass-card reveal">
+    <div class="stat-icon">📁</div>
+    <div class="stat-value">{{ stats.total_documents or 0 }}</div>
+    <div class="stat-label">Total Uploaded Documents</div>
+  </div>
+  <div class="stat-card glass-card reveal">
+    <div class="stat-icon">🤖</div>
+    <div class="stat-value">{{ stats.ai_chats_count or 0 }}</div>
+    <div class="stat-label">AI Chats Count</div>
+  </div>
+  <div class="stat-card glass-card reveal">
+    <div class="stat-icon">📝</div>
+    <div class="stat-value">{{ stats.generated_notes_count or 0 }}</div>
+    <div class="stat-label">Generated Notes Count</div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <!-- Recent Activity -->
+  <div class="glass-card reveal">
+    <h3 class="card-section-title">🕐 Recent Activity</h3>
+    {% if recent_activity %}
+    <ul class="activity-list">
+      {% for item in recent_activity %}
+      <li class="activity-item">
+        <div class="activity-icon">{{ item.icon }}</div>
+        <div class="activity-info">
+          <div class="activity-title">{{ item.title }}</div>
+          <div class="activity-time">{{ item.time }}</div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty-state">
+      <p>No recent activity yet. Start by uploading a document or chatting with the AI tutor!</p>
+      <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="btn-primary" style="margin-top: 0.75rem; display: inline-flex;">Start Learning →</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Continue Learning -->
+  <div class="glass-card reveal">
+    <h3 class="card-section-title">📚 Continue Learning</h3>
+    {% if continue_learning %}
+    {% for course in continue_learning %}
+    <div class="progress-card" style="margin-bottom: 0.75rem;">
+      <div class="progress-card-header">
+        <span class="progress-card-title">{{ course.title }}</span>
+        <span class="progress-card-pct">{{ course.progress }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" style="width: {{ course.progress }}%"></div>
+      </div>
+      <div class="progress-card-meta">Last accessed: {{ course.last_accessed }}</div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state">
+      <p>No courses in progress yet. Start a new learning session!</p>
+      <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="btn-primary" style="margin-top: 0.75rem; display: inline-flex; text-decoration: none;">Continue with AI Tutor →</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Recent AI Interactions -->
+  <div class="glass-card span-full reveal">
+    <h3 class="card-section-title">🤖 Recent AI Interactions</h3>
+    {% if recent_ai %}
+    <div class="dashboard-grid">
+      {% for interaction in recent_ai %}
+      <div class="ai-interaction-card">
+        <div class="ai-interaction-title">{{ interaction.title }}</div>
+        <div class="ai-interaction-preview">{{ interaction.preview }}</div>
+        <div class="ai-interaction-time">{{ interaction.time }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>No AI interactions yet. Start a chat to see your history here.</p>
+      <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="btn-primary" style="margin-top: 0.75rem; display: inline-flex;">Start Chatting →</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

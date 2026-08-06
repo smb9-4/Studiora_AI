@@ -1,0 +1,61 @@
+{% extends "templates_student/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Learning History</h1>
+  <p>Track all your learning activities and AI interactions.</p>
+</div>
+
+<!-- Filter Toolbar -->
+<div class="toolbar">
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" placeholder="Search history..." id="history-search">
+  </div>
+  <div class="filter-bar">
+    <select class="form-select" id="history-filter">
+      <option value="all">All Types</option>
+      <option value="AI Chat">AI Chats</option>
+      <option value="Generated Notes">Generated Notes</option>
+      <option value="Generated Summary">Generated Summaries</option>
+      <option value="Generated MCQs">Generated MCQs</option>
+      <option value="Generated Flashcards">Generated Flashcards</option>
+      <option value="Uploaded Document">Uploaded Documents</option>
+    </select>
+  </div>
+</div>
+
+<!-- History List -->
+<div class="glass-card">
+  {% if history %}
+  <div class="history-list" id="history-list">
+    {% for item in history %}
+    <div class="history-item" data-type="{{ item.type }}" data-title="{{ item.title|lower }}">
+      <div class="history-icon">{{ item.icon }}</div>
+      <div class="history-info">
+        <div class="history-title">{{ item.title }}</div>
+        <div class="history-meta">{{ item.date }} · {{ item.time }}</div>
+      </div>
+      <span class="history-type-badge">{{ item.type }}</span>
+      <button class="btn-sm btn-view" type="button">View</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state" style="padding: 3rem 2rem; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📖</div>
+    <h3 style="margin-bottom: 0.5rem;">No learning history yet</h3>
+    <p style="color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;">Start chatting with the AI or upload documents to build your history</p>
+    <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="btn-primary" style="display: inline-flex;">Start Learning →</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initHistoryPage === 'function') initHistoryPage();
+  });
+</script>
+{% endblock %}

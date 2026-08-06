@@ -1,0 +1,21 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}AI Chat - Studiora AI Professor Dashboard{% endblock %}
+{% block page_title %}AI Assistant{% endblock %}
+
+{% block content %}
+<div class="chat-landing" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; text-align:center; gap:1.5rem;">
+  <div style="font-size:4rem;">🤖</div>
+  <h2 style="font-size:1.5rem; font-weight:600;">Professor AI Assistant</h2>
+  <p style="color:rgba(255,255,255,0.5); max-width:480px; line-height:1.7;">
+    Your intelligent teaching companion. Generate quizzes, lesson plans, assignments, and get AI-powered insights about your course materials.
+  </p>
+  <a href="#" onclick="openProfChat(); return false;"
+     style="display:inline-flex; align-items:center; gap:0.625rem; padding:0.875rem 2rem; border-radius:0.75rem;
+            background:linear-gradient(135deg, #7c3aed, #9333ea); color:#fff; font-weight:600; text-decoration:none;
+            border:1px solid rgba(255,255,255,0.12); box-shadow:0 12px 30px rgba(124,58,237,0.15);
+            transition:transform 0.2s, box-shadow 0.2s;">
+    Open AI Assistant →
+  </a>
+</div>
+{% endblock %}

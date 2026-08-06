@@ -1,0 +1,17 @@
+{% extends "templates_student/base.html" %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Generated Content</h1>
+  <p>View your AI-generated study materials and notes.</p>
+</div>
+
+<div class="glass-card">
+  <div class="empty-state" style="padding: 3rem 2rem; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+    <h3 style="margin-bottom: 0.5rem;">No generated content yet</h3>
+    <p style="color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;">Ask the AI tutor to generate notes, summaries, MCQs, or flashcards for you</p>
+    <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="btn-primary" style="display: inline-flex;">Chat with AI Tutor →</a>
+  </div>
+</div>
+{% endblock %}

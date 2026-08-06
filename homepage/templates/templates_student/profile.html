@@ -1,0 +1,368 @@
+{% extends "templates_student/base.html" %}
+
+{% block extra_css %}
+<style>
+  .profile-edit-btn {
+    width: 100%; margin-top: 1.5rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(90deg, #28D7FF, #6B5CFF); color: #fff; border: none;
+    font-weight: 600; font-family: inherit; font-size: 0.9375rem;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .profile-edit-btn:hover { box-shadow: 0 0 20px rgba(40,215,255,0.25); transform: scale(1.02); }
+  .profile-edit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .profile-input {
+    width: 100%; padding: 0.5rem 0; font-size: 0.875rem; font-weight: 500;
+    background: transparent; border: none; border-bottom: 1px solid transparent;
+    color: #fff; font-family: inherit; outline: none; transition: border-color 0.3s;
+  }
+  .profile-field.editable .profile-input { border-bottom-color: rgba(40,215,255,0.3); }
+  .profile-field.editable .profile-input:focus { border-bottom-color: #28D7FF; }
+  .profile-field-label { font-size: 0.8125rem; color: #B8C3E0; min-width: 140px; }
+  .profile-field { display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid rgba(130,160,255,.12); gap: 1rem; }
+
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: #090d1a; backdrop-filter: blur(20px);
+    border: 1px solid rgba(40,215,255,0.25); color: #fff;
+    padding: 1rem 2rem; border-radius: 0.75rem;
+    font-size: 0.9375rem; font-weight: 500; z-index: 9999;
+    opacity: 0; transition: all 0.5s ease; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .profile-avatar-wrap {
+    position: relative; display: inline-block; margin-bottom: 1rem;
+    cursor: pointer;
+  }
+  .profile-avatar-wrap:hover .profile-avatar-overlay { opacity: 1; }
+  .profile-avatar-overlay {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: rgba(0,0,0,0.5); display: flex; align-items: center;
+    justify-content: center; opacity: 0; transition: opacity 0.3s;
+    font-size: 0.75rem; color: #fff; font-weight: 500;
+  }
+  .profile-avatar-img {
+    width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover;
+    display: block;
+  }
+
+  .photo-popup {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0.9);
+    background: #0c1120; border: 1px solid rgba(125,155,255,.15);
+    border-radius: 18px; padding: 1.5rem; z-index: 10000;
+    opacity: 0; pointer-events: none; transition: all 0.3s;
+    min-width: 220px; backdrop-filter: blur(18px);
+    box-shadow: 0 10px 35px rgba(0,0,0,.45);
+  }
+  .photo-popup.show { opacity: 1; pointer-events: auto; transform: translate(-50%,-50%) scale(1); }
+  .photo-popup-btn {
+    display: block; width: 100%; padding: 0.75rem 1.25rem;
+    background: none; border: none; color: #B8C3E0; font-size: 0.9375rem;
+    font-family: inherit; cursor: pointer; border-radius: 0.75rem;
+    text-align: left; transition: all 0.2s;
+  }
+  .photo-popup-btn:hover { background: rgba(40,215,255,0.08); color: #fff; }
+  .photo-popup-btn.danger:hover { background: rgba(239,68,68,0.08); color: #f87171; }
+
+  .photo-popup-backdrop {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .photo-popup-backdrop.show { opacity: 1; pointer-events: auto; }
+
+  .photo-view-modal {
+    position: fixed; inset: 0; z-index: 10001;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.85); opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .photo-view-modal.show { opacity: 1; pointer-events: auto; }
+  .photo-view-modal img {
+    max-width: 90vw; max-height: 90vh; border-radius: 12px;
+    object-fit: contain;
+  }
+  .photo-view-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: none; border: none; color: #fff; font-size: 2rem;
+    cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+  }
+  .photo-view-close:hover { opacity: 1; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Profile & Settings</h1>
+  <p>Manage your account information and preferences.</p>
+</div>
+
+<div class="profile-grid">
+  <!-- Profile Information -->
+  <div class="glass-card">
+    <h3 class="card-section-title">👤 Profile</h3>
+
+    <div class="profile-avatar-wrap" id="profile-avatar-wrap">
+      <img src="" alt="" class="profile-avatar-img" id="profile-avatar-img" style="display:none;">
+      <div class="profile-avatar-large" id="profile-avatar-initials">{{ user.initials }}</div>
+      <div class="profile-avatar-overlay">📷</div>
+    </div>
+
+    <div class="profile-field">
+      <span class="profile-field-label">Full Name</span>
+      <input type="text" class="profile-input" id="field-name" value="{{ user.name or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Username</span>
+      <input type="text" class="profile-input" id="field-username" value="{{ user.username or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Email</span>
+      <input type="email" class="profile-input" id="field-email" value="{{ student_profile.email or user.email or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Phone</span>
+      <input type="text" class="profile-input" id="field-phone" value="{{ student_profile.phone or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Education Level</span>
+      <input type="text" class="profile-input" id="field-education" value="{{ student_profile.education_level or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Degree / Course</span>
+      <input type="text" class="profile-input" id="field-degree" value="{{ student_profile.degree or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Year / Semester</span>
+      <input type="text" class="profile-input" id="field-year" value="{{ student_profile.year_semester or '' }}" disabled>
+    </div>
+    <div class="profile-field">
+      <span class="profile-field-label">Academic Goals</span>
+      <input type="text" class="profile-input" id="field-goals" value="{{ student_profile.academic_goals or '' }}" disabled>
+    </div>
+
+    <button class="profile-edit-btn" id="edit-btn" type="button">✏️ Edit Profile</button>
+    <button class="profile-edit-btn" id="save-btn" type="button" style="display:none;">💾 Save Changes</button>
+  </div>
+
+  <!-- Change Password -->
+  <div class="glass-card">
+    <h3 class="card-section-title">🔑 Change Password</h3>
+    <p style="color: #B8C3E0; font-size: 0.8125rem; margin-bottom: 1rem;">Leave blank to keep current password.</p>
+
+    <div class="form-group">
+      <label class="form-label">Current Password</label>
+      <input type="password" class="form-input" id="pwd-current" placeholder="Enter current password" disabled>
+    </div>
+    <div class="form-group">
+      <label class="form-label">New Password</label>
+      <input type="password" class="form-input" id="pwd-new" placeholder="Enter new password" disabled>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Confirm New Password</label>
+      <input type="password" class="form-input" id="pwd-confirm" placeholder="Confirm new password" disabled>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file input -->
+<input type="file" id="photo-input" accept="image/*" style="display:none;">
+
+<!-- Photo popup backdrop -->
+<div class="photo-popup-backdrop" id="photo-popup-backdrop"></div>
+
+<!-- Photo popup menu -->
+<div class="photo-popup" id="photo-popup">
+  <button class="photo-popup-btn" id="view-photo-btn">👁️ View Photo</button>
+  <button class="photo-popup-btn" id="change-photo-btn">📁 Change Photo</button>
+  <button class="photo-popup-btn danger" id="remove-photo-btn">🗑️ Remove Photo</button>
+</div>
+
+<!-- Full-screen photo view -->
+<div class="photo-view-modal" id="photo-view-modal">
+  <button class="photo-view-close" id="photo-view-close">&times;</button>
+  <img src="" alt="Profile Photo" id="photo-view-img">
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">✅ <span id="toast-msg">Changes saved</span></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var inputs = document.querySelectorAll('#field-name, #field-email, #field-phone, #field-education, #field-degree, #field-year, #field-goals');
+  var pwdInputs = document.querySelectorAll('#pwd-current, #pwd-new, #pwd-confirm');
+  var editBtn = document.getElementById('edit-btn');
+  var saveBtn = document.getElementById('save-btn');
+  var toast = document.getElementById('toast');
+  var toastMsg = document.getElementById('toast-msg');
+  var isEditing = false;
+
+  /* ── Photo upload ── */
+  var avatarWrap = document.getElementById('profile-avatar-wrap');
+  var avatarImg = document.getElementById('profile-avatar-img');
+  var avatarInitials = document.getElementById('profile-avatar-initials');
+  var sidebarAvatar = document.getElementById('sidebar-avatar');
+  var photoInput = document.getElementById('photo-input');
+  var popup = document.getElementById('photo-popup');
+  var popupBackdrop = document.getElementById('photo-popup-backdrop');
+  var viewBtn = document.getElementById('view-photo-btn');
+  var changeBtn = document.getElementById('change-photo-btn');
+  var removeBtn = document.getElementById('remove-photo-btn');
+  var viewModal = document.getElementById('photo-view-modal');
+  var viewImg = document.getElementById('photo-view-img');
+  var viewClose = document.getElementById('photo-view-close');
+
+  var photoKey = 'profilePhoto_{{ user.username }}';
+  var savedPhoto = localStorage.getItem(photoKey);
+
+  function setPhoto(src) {
+    avatarImg.src = src;
+    avatarImg.style.display = 'block';
+    avatarInitials.style.display = 'none';
+    sidebarAvatar.innerHTML = '<img src="' + src + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+    localStorage.setItem(photoKey, src);
+  }
+
+  function removePhoto() {
+    avatarImg.src = '';
+    avatarImg.style.display = 'none';
+    avatarInitials.style.display = 'flex';
+    sidebarAvatar.innerHTML = '{{ user.initials }}';
+    localStorage.removeItem(photoKey);
+  }
+
+  if (savedPhoto) setPhoto(savedPhoto);
+
+  avatarWrap.addEventListener('click', function (e) {
+    e.stopPropagation();
+    popup.classList.add('show');
+    popupBackdrop.classList.add('show');
+  });
+
+  function closePopup() {
+    popup.classList.remove('show');
+    popupBackdrop.classList.remove('show');
+  }
+
+  popupBackdrop.addEventListener('click', closePopup);
+
+  viewBtn.addEventListener('click', function () {
+    closePopup();
+    if (avatarImg.src && avatarImg.style.display !== 'none') {
+      viewImg.src = avatarImg.src;
+      viewModal.classList.add('show');
+    }
+  });
+
+  viewClose.addEventListener('click', function () { viewModal.classList.remove('show'); });
+  viewModal.addEventListener('click', function (e) { if (e.target === viewModal) viewModal.classList.remove('show'); });
+
+  changeBtn.addEventListener('click', function () {
+    closePopup();
+    photoInput.click();
+  });
+
+  photoInput.addEventListener('change', function () {
+    var file = photoInput.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) { setPhoto(e.target.result); };
+    reader.readAsDataURL(file);
+    photoInput.value = '';
+  });
+
+  removeBtn.addEventListener('click', function () {
+    closePopup();
+    removePhoto();
+  });
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function () { toast.classList.remove('show'); }, 2500);
+  }
+
+  function enableEditing() {
+    isEditing = true;
+    inputs.forEach(function (el) { el.disabled = false; });
+    pwdInputs.forEach(function (el) { el.disabled = false; });
+    editBtn.style.display = 'none';
+    saveBtn.style.display = 'block';
+  }
+
+  function disableEditing() {
+    isEditing = false;
+    inputs.forEach(function (el) { el.disabled = true; });
+    pwdInputs.forEach(function (el) { el.disabled = true; });
+    saveBtn.style.display = 'none';
+    editBtn.style.display = 'block';
+  }
+
+  editBtn.addEventListener('click', enableEditing);
+
+  saveBtn.addEventListener('click', async function () {
+    var name = document.getElementById('field-name').value.trim();
+    var email = document.getElementById('field-email').value.trim();
+    var phone = document.getElementById('field-phone').value.trim();
+    var education = document.getElementById('field-education').value.trim();
+    var degree = document.getElementById('field-degree').value.trim();
+    var year = document.getElementById('field-year').value.trim();
+    var goals = document.getElementById('field-goals').value.trim();
+    var pwdCurrent = document.getElementById('pwd-current').value.trim();
+    var pwdNew = document.getElementById('pwd-new').value.trim();
+    var pwdConfirm = document.getElementById('pwd-confirm').value.trim();
+
+    if (!name) { showToast('⚠️ Full name is required'); return; }
+    if (!email) { showToast('⚠️ Email is required'); return; }
+    if (pwdNew && !pwdCurrent) { showToast('⚠️ Enter current password to change password'); return; }
+    if (pwdNew && pwdNew !== pwdConfirm) { showToast('⚠️ New passwords do not match'); return; }
+
+    saveBtn.disabled = true;
+    saveBtn.textContent = '⏳ Saving...';
+
+    try {
+      var payload = {
+        full_name: name,
+        email: email,
+        phone: phone,
+        education_level: education,
+        degree: degree,
+        year_semester: year,
+        academic_goals: goals,
+        current_password: pwdCurrent,
+        new_password: pwdNew,
+        confirm_password: pwdConfirm,
+      };
+
+      var res = await fetch('{{ url_for("api_update_student_profile") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      var data = await res.json();
+
+      if (!res.ok || !data.success) {
+        showToast('⚠️ ' + (data.error || 'Unable to save'));
+        saveBtn.disabled = false;
+        saveBtn.textContent = '💾 Save Changes';
+        return;
+      }
+
+      showToast('✅ Changes saved successfully');
+      disableEditing();
+    } catch (err) {
+      showToast('⚠️ Network error. Try again.');
+    }
+
+    saveBtn.disabled = false;
+    saveBtn.textContent = '💾 Save Changes';
+  });
+});
+</script>
+{% endblock %}

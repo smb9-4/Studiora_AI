@@ -1,0 +1,47 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}Documents - Studiora AI Professor Dashboard{% endblock %}
+{% block page_title %}Document Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📁 Uploaded Documents</h1>
+    <p>Browse and preview student-uploaded course materials.</p>
+</div>
+
+<!-- Search bar (UI only — filters client-side) -->
+<div class="search-bar">
+    <input type="text" id="document-search" placeholder="🔍 Search documents by name or student...">
+</div>
+
+<div class="table-wrapper">
+    <table id="documents-table">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Uploaded</th>
+                <th>Student</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in documents %}
+            <tr>
+                <td>{{ doc.name }}</td>
+                <td>
+                    <span class="file-type file-type-{{ doc.type|lower }}">{{ doc.type }}</span>
+                </td>
+                <td>{{ doc.size }}</td>
+                <td>{{ doc.uploaded }}</td>
+                <td>{{ doc.student }}</td>
+                <td>
+                    <a href="{{ url_for('preview', doc_id=doc.id) }}" class="btn btn-sm">Preview</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

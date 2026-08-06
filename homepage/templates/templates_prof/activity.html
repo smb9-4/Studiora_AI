@@ -1,0 +1,36 @@
+{% extends "templates_prof/base.html" %}
+
+{% block title %}Activity - Studiora AI Professor Dashboard{% endblock %}
+{% block page_title %}Student Activity{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Activity Timeline</h1>
+    <p>Track student logins, document uploads, and AI usage.</p>
+</div>
+
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">🕐 Recent Activities</h2>
+    </div>
+
+    <div class="timeline">
+        {% for item in timeline %}
+        <div class="timeline-item">
+            <div class="timeline-dot">
+                {% if item.icon == 'login' %}🔒
+                {% elif item.icon == 'upload' %}📄
+                {% elif item.icon == 'chat' %}💬
+                {% elif item.icon == 'doc' %}📑
+                {% else %}👤{% endif %}
+            </div>
+            <div class="timeline-content">
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.detail }}</p>
+                <span>{{ item.time }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
