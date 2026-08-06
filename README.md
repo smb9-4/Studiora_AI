@@ -9,68 +9,169 @@
 
 ---
 
-# 📖 Overview
+## 📖 Overview
 
 Studiora AI is an intelligent educational platform designed to bridge the gap between traditional learning and Artificial Intelligence.
 
-Students can upload textbooks, notes and academic materials, ask contextual questions, generate summaries and study resources, while professors can manage learning materials, monitor student activities and interact with an AI assistant designed specifically for educators.
+Students can upload textbooks, notes, and academic materials, ask contextual questions, and generate summaries and study resources. Professors can manage learning materials, monitor student activities, and interact with an AI assistant designed specifically for educators.
 
-The platform is built completely in Python using Flask and supports both online and offline AI models.
+The platform is built entirely in Python using Flask and supports both online and offline AI models.
 
 ---
 
-# 🚀 Features
+## 🏗️ System Architecture
 
-## 👨‍🎓 Student Module
+```mermaid
+graph TB
+    subgraph Client["Client Layer"]
+        UI[Web Browser<br/>HTML/CSS/JS]
+    end
+
+    subgraph Server["Flask Application"]
+        Auth[Authentication]
+        StudentMod[Student Module]
+        ProfMod[Professor Module]
+        AIEngine[AI Chat Engine]
+        DocProcessor[Document Processor]
+        MemoryMgr[Memory Manager]
+    end
+
+    subgraph Storage["Data Layer"]
+        DB[(SQLite Database)]
+        Uploads[(Uploaded Documents<br/>PDF / DOCX / TXT)]
+    end
+
+    subgraph AILayer["AI Layer"]
+        Ollama[Ollama Runtime]
+        Qwen[Qwen Local LLM]
+        LangChain[LangChain Pipeline]
+    end
+
+    UI --> Auth
+    Auth --> StudentMod
+    Auth --> ProfMod
+    StudentMod --> AIEngine
+    ProfMod --> AIEngine
+    StudentMod --> DocProcessor
+    ProfMod --> DocProcessor
+    DocProcessor --> Uploads
+    DocProcessor --> MemoryMgr
+    AIEngine --> MemoryMgr
+    MemoryMgr --> DB
+    AIEngine --> LangChain
+    LangChain --> Ollama
+    Ollama --> Qwen
+```
+
+---
+
+## 🧠 Memory System
+
+Studiora AI includes an intelligent memory mechanism that enables contextual and continuous conversations instead of isolated responses.
+
+### How It Works
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant AI as AI Chat Engine
+    participant MM as Memory Manager
+    participant DB as SQLite Database
+    participant LLM as Local LLM (Ollama/Qwen)
+
+    U->>AI: Ask question
+    AI->>MM: Fetch conversation memory
+    MM->>DB: Retrieve session history
+    DB-->>MM: Return past interactions
+    AI->>MM: Fetch document memory
+    MM->>DB: Retrieve relevant document context
+    DB-->>MM: Return processed context
+    MM-->>AI: Combined context (conversation + document)
+    AI->>LLM: Send question + context
+    LLM-->>AI: Generated response
+    AI->>MM: Store new interaction
+    MM->>DB: Save updated memory
+    AI-->>U: Contextual answer
+```
+
+### Features
+
+- **Conversation Memory** — Remembers previous interactions within a chat session, allowing natural follow-up questions without repeating context.
+- **Document Memory** — Stores the processed context of uploaded documents and retrieves relevant information when answering questions.
+- **Context Retention** — Maintains conversation flow by remembering earlier topics discussed by the user.
+- **Session-Based Memory** — Keeps AI responses consistent throughout the current learning session.
+- **Contextual Retrieval** — Retrieves only the most relevant portions of uploaded study material before generating answers.
+- **Personalized Learning Context** — Uses previous interactions to provide more meaningful and personalized responses.
+- **Multi-Document Context** — Supports understanding and answering questions across multiple uploaded documents.
+- **Efficient Memory Management** — Avoids reprocessing the same document repeatedly, reducing response time and improving efficiency.
+
+### Benefits
+
+- More human-like conversations
+- Better contextual understanding
+- Reduced repetitive questioning
+- Faster document-based responses
+- Improved learning continuity
+
+---
+
+## 🚀 Features
+
+### 👨‍🎓 Student Module
 
 - Secure Authentication
 - Personalized Dashboard
 - AI Chat Assistant
-- Document Upload
-- PDF Support
-- DOCX Support
-- TXT Support
+- Document Upload (PDF, DOCX, TXT)
 - Context-aware Question Answering
-- Document Memory
-- Conversation Memory
+- Document & Conversation Memory
 - Study History
 - Personalized Learning
-- AI Generated Notes
-- AI Generated Summaries
-- AI Generated Practice Questions
+- AI Generated Notes, Summaries & Practice Questions
 - Offline Study Support
-- Progress Tracking
-- Learning Statistics
+- Progress Tracking & Learning Statistics
 - Profile Management
 
----
-
-## 👨‍🏫 Professor Module
+### 👨‍🏫 Professor Module
 
 - Secure Authentication
 - Professor Dashboard
 - Student Management
 - Document Management
-- AI Assistant
+- AI Assistant for Teaching
 - View Student Activities
 - Upload Learning Materials
-- Search Students
-- Search Documents
-- AI Assisted Teaching
+- Search Students & Documents
 - Learning Analytics
 - Profile Management
 
 ---
 
-# 🧠 AI Capabilities
+## 🔄 Document Q&A Flow
 
-Studiora AI can
+```mermaid
+flowchart LR
+    A[Upload Document] --> B[Extract Text<br/>PyMuPDF / python-docx]
+    B --> C[Chunk & Process<br/>LangChain]
+    C --> D[Store in Document Memory]
+    D --> E{User Asks Question}
+    E --> F[Retrieve Relevant Context]
+    F --> G[Send to Local LLM]
+    G --> H[Generate Answer]
+    H --> I[Return to User]
+    H --> J[Save to Conversation Memory]
+```
+
+---
+
+## 🧠 AI Capabilities
+
+Studiora AI can:
 
 - Answer contextual questions
 - Remember previous conversations
 - Understand uploaded documents
-- Generate structured notes
-- Generate summaries
+- Generate structured notes and summaries
 - Explain concepts
 - Provide personalized learning
 - Maintain document context
@@ -80,161 +181,119 @@ Studiora AI can
 
 ---
 
-# 📂 Supported Documents
+## 📂 Supported Documents
 
-- PDF
-- DOCX
-- TXT
-
-Future Support
-
-- PPTX
-- Images
-- OCR Documents
-- Scanned Notes
+| Format | Status |
+|--------|--------|
+| PDF | ✅ Supported |
+| DOCX | ✅ Supported |
+| TXT | ✅ Supported |
+| PPTX | 🔜 Planned |
+| Images / OCR | 🔜 Planned |
+| Scanned Notes | 🔜 Planned |
 
 ---
 
-# 💻 Technology Stack
+## 💻 Technology Stack
 
-Frontend
+**Frontend**
+- HTML5, CSS3, JavaScript
 
-- HTML5
-- CSS3
-- JavaScript
+**Backend**
+- Python, Flask
 
-Backend
-
-- Python
-- Flask
-
-Database
-
+**Database**
 - SQLite
 
-AI
+**AI**
+- Ollama, Qwen Models, Local LLMs
 
-- Ollama
-- Qwen Models
-- Local LLMs
-
-Libraries
-
-- LangChain
-- PyMuPDF
-- python-docx
-- SQLite3
+**Libraries**
+- LangChain, PyMuPDF, python-docx, SQLite3
 
 ---
 
-# 📁 Project Structure
+## 📁 Project Structure
 
 ```
 StudioraAI/
 │
-├── static/
-│
-├── templates/
-│
-├── uploads/
-│
-├── student/
-│
-├── professor/
-│
-├── database/
-│
-├── models/
-│
-├── app.py
-│
-├── requirements.txt
-│
+├── static/           # CSS, JS, images
+├── templates/         # HTML templates
+├── uploads/           # User-uploaded documents
+├── student/           # Student module logic
+├── professor/         # Professor module logic
+├── database/          # Database files & schema
+├── models/            # AI / memory model logic
+├── app.py             # Application entry point
+├── requirements.txt   # Python dependencies
 └── README.md
 ```
 
 ---
 
-# ⚙️ Installation
+## ⚙️ Installation
 
-Clone the repository
-
+**1. Clone the repository**
 ```bash
 git clone https://github.com/YOUR_USERNAME/StudioraAI.git
 ```
 
-Move into project
-
+**2. Move into the project directory**
 ```bash
 cd StudioraAI
 ```
 
-Create Virtual Environment
+**3. Create a virtual environment**
 
-Windows
-
+Windows:
 ```bash
 python -m venv venv
-```
-
-Activate
-
-```bash
 venv\Scripts\activate
 ```
 
-Linux / Mac
-
+Linux / Mac:
 ```bash
+python -m venv venv
 source venv/bin/activate
 ```
 
-Install Dependencies
-
+**4. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-# ▶️ Running the Project
+## ▶️ Running the Project
 
-Start Homepage
-
+Start the application:
 ```bash
 python app.py
 ```
-
 or
-
 ```bash
 flask run
 ```
 
-Open browser
-
+Then open your browser at:
 ```
 http://127.0.0.1:5000
 ```
 
 ---
 
-# 🤖 Running AI Models
+## 🤖 Running AI Models
 
-Install Ollama
+**1. Install Ollama**
+Download from [ollama.com](https://ollama.com)
 
-https://ollama.com
-
-Download model
-
-Example
-
+**2. Pull a model**
 ```bash
 ollama pull qwen2.5:7b
 ```
 
-Run
-
+**3. Run the model server**
 ```bash
 ollama serve
 ```
@@ -243,58 +302,47 @@ The Flask backend will automatically communicate with the local model.
 
 ---
 
-# 💾 System Requirements
+## 💾 System Requirements
 
-Minimum
-
-- Windows 10 / Linux
-- Intel i5 8th Gen
-- Ryzen 5
-- 8 GB RAM
-- 10 GB Free Storage
-
-Recommended
-
-- Intel i7 / Ryzen 7
-- NVIDIA RTX 3060 or above
-- 16 GB RAM
-- SSD Storage
-- CUDA Support
-
-Best Experience
-
-- RTX 4050+
-- 32 GB RAM
-- NVMe SSD
+| Tier | Specs |
+|------|-------|
+| **Minimum** | Windows 10 / Linux · Intel i5 8th Gen or Ryzen 5 · 8 GB RAM · 10 GB free storage |
+| **Recommended** | Intel i7 / Ryzen 7 · NVIDIA RTX 3060+ · 16 GB RAM · SSD · CUDA support |
+| **Best Experience** | RTX 4050+ · 32 GB RAM · NVMe SSD |
 
 ---
 
-# 📚 Current Functionalities
+## 📚 Current Functionalities
 
-✅ Authentication
-
-✅ Student Dashboard
-
-✅ Professor Dashboard
-
-✅ AI Chat
-
-✅ Document Upload
-
-✅ Context Retrieval
-
-✅ Conversation Memory
-
-✅ Profile Management
-
-✅ Learning Progress
-
-✅ Offline AI Support
+- ✅ Authentication
+- ✅ Student Dashboard
+- ✅ Professor Dashboard
+- ✅ AI Chat
+- ✅ Document Upload
+- ✅ Context Retrieval
+- ✅ Conversation Memory
+- ✅ Profile Management
+- ✅ Learning Progress
+- ✅ Offline AI Support
 
 ---
 
+## 🔜 Future Roadmap
 
-# 🎯 Use Cases
+- Voice Learning
+- OCR Support
+- Multi-language Support
+- AI Exam Evaluation
+- Vision OMR Integration
+- Assignment Evaluation
+- Research Assistant
+- Mobile Application
+- Cloud Synchronization
+- Collaborative Learning
+
+---
+
+## 🎯 Use Cases
 
 - Schools
 - Colleges
@@ -306,21 +354,26 @@ Best Experience
 
 ---
 
+## 🤝 Contributors
 
-# 📜 License
-
-This project is released under the MIT License.
+**Team Studiora AI**
+- Shrikant
+- Team Members
 
 ---
 
-# ⭐ Support
+## 📜 License
 
-If you found this project useful,
+This project is released under the [MIT License](LICENSE).
 
-⭐ Star the repository
+---
 
-🍴 Fork the repository
+## ⭐ Support
 
-📢 Share with others
+If you found this project useful:
 
-Contributions are always welcome.
+- ⭐ Star the repository
+- 🍴 Fork the repository
+- 📢 Share with others
+
+Contributions are always welcome!
