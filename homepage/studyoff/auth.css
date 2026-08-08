@@ -35,6 +35,13 @@
   margin-bottom: 2rem;
 }
 
+.auth-logo-img {
+  height: 2.75rem;
+  width: auto;
+  border-radius: 0.5rem;
+  object-fit: contain;
+}
+
 .auth-form {
   text-align: left;
 }

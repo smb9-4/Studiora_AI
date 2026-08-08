@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}" />
   <style>
     .auth-secondary-btn {
       width: 100%;
@@ -56,8 +57,7 @@
 <div class="auth-container">
   <div class="auth-card">
     <a href="{{ url_for('landing') }}" class="auth-logo">
-      <div class="logo-icon">S</div>
-      <span class="logo-text">Studiora <span class="text-neon">AI</span></span>
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Studiora AI Logo" class="auth-logo-img" />
     </a>
 
     <div class="role-badge">

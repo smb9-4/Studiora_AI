@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}" />
   <style>
     .dashboard { min-height: 100vh; padding: 6rem 1.5rem 2rem; max-width: 1280px; margin: 0 auto; }
     .dashboard-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
@@ -50,8 +51,7 @@
 <nav class="navbar scrolled" style="position:fixed; animation:none; transform:translateY(0);">
   <div class="nav-inner">
     <a href="{{ url_for('landing') }}" class="nav-logo">
-      <div class="logo-icon">S</div>
-      <span class="logo-text">Studiora <span class="text-neon">AI</span></span>
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Studiora AI Logo" class="logo-img" />
     </a>
     <form action="{{ url_for('api_logout') }}" method="get">
       <button class="logout-btn">

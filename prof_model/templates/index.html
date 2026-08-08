@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Professor AI</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}"/>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -35,6 +36,9 @@ window.MathJax = {
 
   <!-- ── SIDEBAR ── -->
   <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Studiora AI" class="sidebar-brand-img"/>
+    </div>
     <div class="sidebar-top">
       <button class="new-chat-btn" onclick="newChat()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>

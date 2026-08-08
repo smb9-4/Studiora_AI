@@ -47,6 +47,8 @@ body{
   z-index:200;
 }
 .sidebar-top{padding:12px;border-bottom:1px solid var(--border)}
+.sidebar-brand{padding:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.sidebar-brand-img{height:2.5rem;width:auto;border-radius:0.5rem;object-fit:contain}
 .new-chat-btn{
   display:flex;align-items:center;justify-content:center;gap:8px;
   width:100%;padding:10px 14px;border-radius:8px;

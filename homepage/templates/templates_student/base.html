@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page_title }} – Studiora AI</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}" />
   <link rel="stylesheet" href="{{ url_for('student_static', filename='css/style-2.css') }}">
   <link rel="stylesheet" href="{{ url_for('student_static', filename='css/style-1.css') }}">
   <link rel="stylesheet" href="{{ url_for('student_static', filename='css/shared_effects.css') }}">
@@ -23,8 +24,7 @@
     <aside class="app-sidebar" id="app-sidebar">
       <div class="app-sidebar-header">
         <a href="{{ url_for('student_dashboard') }}" class="sidebar-logo">
-          <div class="logo-icon">S</div>
-          <span class="logo-text">Studiora AI</span>
+          <img src="{{ url_for('student_static', filename='images/logo.png') }}" alt="Studiora AI Logo" class="sidebar-logo-img" />
         </a>
       </div>
 

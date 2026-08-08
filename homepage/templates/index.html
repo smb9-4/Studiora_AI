@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <title>Studiora AI - Your Personal AI Learning Companion</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body class="homepage">
@@ -46,8 +47,7 @@
 <nav id="navbar" class="navbar">
   <div class="nav-inner">
     <a href="#home" class="nav-logo">
-      <div class="logo-icon">S</div>
-      <span class="logo-text">Studiora <span class="text-neon">AI</span></span>
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Studiora AI Logo" class="logo-img" />
     </a>
     <div class="nav-links">
       <a href="#home" class="nav-link">Home</a>
@@ -320,8 +320,7 @@
     <div class="footer-grid">
       <div class="reveal" style="transition-delay:0s">
         <div class="footer-brand">
-          <div class="logo-icon">S</div>
-          <span class="logo-text">Studiora <span class="text-neon">AI</span></span>
+          <img src="{{ url_for('static', filename='logo.png') }}" alt="Studiora AI Logo" class="logo-img" style="height:2.5rem;width:auto;" />
         </div>
         <p class="footer-tagline">The future of AI-powered education. Learn smarter, not harder.</p>
       </div>

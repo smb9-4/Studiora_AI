@@ -338,7 +338,6 @@ The Flask backend will automatically communicate with the local model.
 - Research Assistant
 - Mobile Application
 - Cloud Synchronization
-- Collaborative Learning
 
 ---
 
