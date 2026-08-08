@@ -269,7 +269,7 @@ pip install -r requirements.txt
 
 Start the application:
 ```bash
-python app.py
+python run.py
 ```
 or
 ```bash

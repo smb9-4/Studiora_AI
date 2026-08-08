@@ -9,18 +9,22 @@
   <p style="color:rgba(255,255,255,0.5);max-width:420px;margin-bottom:2rem;line-height:1.7;">
     Get help with your studies — ask questions, upload documents, generate notes, and more.
   </p>
-  <a href="http://localhost:5001/?username={{ user.username }}" target="_blank"
-     style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 2rem;
-            background:linear-gradient(135deg,#4a9eff,#3d8ae8);color:#fff;border-radius:12px;
-            font-size:1rem;font-weight:600;text-decoration:none;transition:transform .15s,box-shadow .15s;
-            box-shadow:0 4px 20px rgba(74,158,255,0.25);"
-     onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 28px rgba(74,158,255,0.35)'"
-     onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(74,158,255,0.25)'">
-    <span>Start chat with assistant</span>
-    <span style="font-size:1.25rem;">→</span>
-  </a>
+  <form action="http://localhost:5001/auto-login" method="post" target="_blank">
+    <input type="hidden" name="username" value="{{ user.username }}">
+    <input type="hidden" name="name" value="{{ user.name }}">
+    <button type="submit"
+       style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 2rem;
+              background:linear-gradient(135deg,#4a9eff,#3d8ae8);color:#fff;border-radius:12px;
+              font-size:1rem;font-weight:600;text-decoration:none;transition:transform .15s,box-shadow .15s;
+              box-shadow:0 4px 20px rgba(74,158,255,0.25);border:none;cursor:pointer;font-family:inherit;"
+       onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 28px rgba(74,158,255,0.35)'"
+       onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(74,158,255,0.25)'">
+      <span>Start chat with assistant</span>
+      <span style="font-size:1.25rem;">→</span>
+    </button>
+  </form>
   <p style="color:rgba(255,255,255,0.3);font-size:0.8rem;margin-top:1.5rem;">
-    Opens the AI assistant in a new tab. Sign in with your account to continue.
+    Opens the AI assistant in a new tab with your account already signed in.
   </p>
 </div>
 {% endblock %}

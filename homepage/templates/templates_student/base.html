@@ -35,9 +35,13 @@
         </a>
 
         <div class="sidebar-section-label">📚 Learning</div>
-        <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="sidebar-link">
-          <span class="link-icon">🤖</span> AI Chat
-        </a>
+        <form action="http://localhost:5001/auto-login" method="post" target="_blank" style="margin:0;padding:0;display:block">
+          <input type="hidden" name="username" value="{{ user.username }}">
+          <input type="hidden" name="name" value="{{ user.name }}">
+          <button type="submit" class="sidebar-link" style="width:100%;border:none;background:none;color:#8E9AB8;text-align:left;cursor:pointer;font:inherit;margin:0">
+            <span class="link-icon">🤖</span> AI Chat
+          </button>
+        </form>
         <a href="{{ url_for('student_documents') }}" class="sidebar-link {% if active_page == 'documents' %}active{% endif %}">
           <span class="link-icon">📁</span> My Documents
         </a>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign in — StudyOff Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:#0d0d0d;color:#e3e3e3;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+  padding:20px;
+}
+:root{
+  --bg-card:#161616;
+  --border:#2a2a2a;
+  --accent:#4a9eff;
+  --accent-hover:#3d8ae8;
+  --muted:#6b6b6b;
+  --ghost:#e3e3e3;
+  --red:#f87171;
+  --red-dim:#f8717118;
+  --green:#3ecf8e;
+}
+
+.bg-glow{
+  position:fixed;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 20%, #4a9eff12, transparent 40%),
+    radial-gradient(circle at 80% 80%, #3ecf8e0d, transparent 40%);
+}
+
+.card{
+  width:100%;max-width:380px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:36px 32px;
+  position:relative;z-index:1;
+}
+
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.brand-icon{font-size:28px}
+.brand-name{font-size:18px;font-weight:700;color:#fff}
+
+h1{font-size:20px;font-weight:600;text-align:center;margin-bottom:6px;color:#fff}
+.subtitle{font-size:13px;color:var(--muted);text-align:center;margin-bottom:26px}
+
+.tabs{display:flex;background:#1e1e1e;border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:24px}
+.tab{
+  flex:1;text-align:center;padding:8px;border-radius:7px;
+  font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);
+  transition:all .15s;
+}
+.tab.active{background:var(--accent);color:#fff}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500}
+.field input{
+  width:100%;padding:11px 13px;border-radius:8px;
+  background:#1e1e1e;border:1px solid var(--border);
+  color:var(--ghost);font-size:14px;font-family:inherit;
+  outline:none;transition:border-color .15s;
+}
+.field input:focus{border-color:var(--accent)}
+.field input::placeholder{color:#4a4a4a}
+
+.submit-btn{
+  width:100%;padding:12px;border-radius:8px;margin-top:6px;
+  background:var(--accent);border:none;color:#fff;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:background .15s;font-family:inherit;
+}
+.submit-btn:hover{background:var(--accent-hover)}
+.submit-btn:disabled{background:#3a3a3a;cursor:not-allowed}
+
+.error-box{
+  background:var(--red-dim);border:1px solid var(--red);
+  color:var(--red);font-size:12.5px;padding:9px 12px;
+  border-radius:8px;margin-bottom:16px;display:none;
+}
+.error-box.show{display:block}
+
+.form{display:none}
+.form.active{display:block}
+
+.hint{font-size:11px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<div class="card">
+  <div class="brand">
+    <span class="brand-icon">📚</span>
+    <span class="brand-name">StudyOff Assistant</span>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tabLogin" onclick="switchTab('login')">Sign In</div>
+    <div class="tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</div>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- LOGIN FORM -->
+  <form class="form active" id="loginForm" onsubmit="return handleLogin(event)">
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="loginUsername" placeholder="e.g. ravi_k" autocomplete="username" required/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required/>
+    </div>
+    <button class="submit-btn" type="submit" id="loginBtn">Sign In</button>
+  </form>
+
+  <!-- SIGNUP FORM -->
+  <form class="form" id="signupForm" onsubmit="return handleSignup(event)">
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="signupName" placeholder="e.g. Ravi Kumar" required/>
+    </div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="signupUsername" placeholder="choose a username" autocomplete="username" required/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="signupPassword" placeholder="min. 4 characters" autocomplete="new-password" required/>
+    </div>
+    <button class="submit-btn" type="submit" id="signupBtn">Create Account</button>
+  </form>
+
+  <div class="hint">Your questions and documents stay private to your account.</div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.getElementById('tabLogin').classList.toggle('active', tab==='login');
+  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
+  document.getElementById('loginForm').classList.toggle('active', tab==='login');
+  document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+  hideError();
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.textContent = msg;
+  box.classList.add('show');
+}
+function hideError() {
+  document.getElementById('errorBox').classList.remove('show');
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  hideError();
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    const r = await fetch('/api/auth/login', {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({username, password})
+    });
+    const data = await r.json();
+    if (!r.ok) { showError(data.error || 'Sign in failed.'); btn.disabled=false; btn.textContent='Sign In'; return false; }
+    window.location.href = '/';
+  } catch(err) {
+    showError('Could not reach server.');
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+  return false;
+}
+
+async function handleSignup(e) {
+  e.preventDefault();
+  hideError();
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = 'Creating account…';
+
+  const name     = document.getElementById('signupName').value.trim();
+  const username = document.getElementById('signupUsername').value.trim();
+  const password = document.getElementById('signupPassword').value;
+
+  try {
+    const r = await fetch('/api/auth/signup', {
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name, username, password})
+    });
+    const data = await r.json();
+    if (!r.ok) { showError(data.error || 'Sign up failed.'); btn.disabled=false; btn.textContent='Create Account'; return false; }
+    window.location.href = '/';
+  } catch(err) {
+    showError('Could not reach server.');
+    btn.disabled = false; btn.textContent = 'Create Account';
+  }
+  return false;
+}
+</script>
+</body>
+</html>

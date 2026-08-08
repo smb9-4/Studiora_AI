@@ -26,6 +26,7 @@ app.jinja_loader = ChoiceLoader([
     FileSystemLoader(os.path.join(BASE_DIR, 'templates', 'templates_prof')),
 ])
 app.secret_key = os.environ.get("Studiora_SECRET", "dev-secret-change-in-production-fixed-key-for-dev")
+app.config["SESSION_COOKIE_NAME"] = "studiora_home_session"
 
 DB_PATH = os.path.join(BASE_DIR, 'users.db')
 

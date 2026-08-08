@@ -46,7 +46,11 @@
     <div style="font-size: 3rem; margin-bottom: 1rem;">📖</div>
     <h3 style="margin-bottom: 0.5rem;">No learning history yet</h3>
     <p style="color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;">Start chatting with the AI or upload documents to build your history</p>
-    <a href="http://localhost:5001/?username={{ user.username }}" target="_blank" class="btn-primary" style="display: inline-flex;">Start Learning →</a>
+    <form action="http://localhost:5001/auto-login" method="post" target="_blank" style="display: inline-flex;">
+      <input type="hidden" name="username" value="{{ user.username }}">
+      <input type="hidden" name="name" value="{{ user.name }}">
+      <button type="submit" class="btn-primary">Start Learning →</button>
+    </form>
   </div>
   {% endif %}
 </div>
