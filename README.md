@@ -19,33 +19,23 @@ Studiora AI aims to bridge this digital and educational gap by providing an offl
 
 ## Problems with conventional AI learning platforms
 
-- 🌐 Internet Dependency
-- Most AI learning platforms require a stable internet connection.
+- 🌐 Internet Dependency : Most AI learning platforms require a stable internet connection.
 
-- 🔑 API Key Dependency
-- Many AI applications depend on external APIs and API keys. If the key expires, reaches its quota, is revoked, or the service is     unavailable, AI functionality stops.
+- 🔑 API Key Dependency : Many AI applications depend on external APIs and API keys. If the key expires, reaches its quota, is revoked, or the service is     unavailable, AI functionality stops.
 
-- 💰 Recurring API Costs
-- Continuous API usage can become expensive as the number of students increases.
+- 💰 Recurring API Costs : Continuous API usage can become expensive as the number of students increases.
 
-- ☁️ Cloud Dependency
-- Student queries and learning materials may need to be sent to external cloud services.
+- ☁️ Cloud Dependency : Student queries and learning materials may need to be sent to external cloud services.
 
-- 🔒 Privacy Concerns
-- Uploading personal notes, textbooks, assignments, and academic data to third-party services can create privacy concerns.
+- 🔒 Privacy Concerns : Uploading personal notes, textbooks, assignments, and academic data to third-party services can create privacy concerns.
 
-- 📶 Poor Rural Accessibility
-- Students in areas with weak or unavailable connectivity cannot reliably use cloud-based AI learning platforms.
+- 📶 Poor Rural Accessibility : Students in areas with weak or unavailable connectivity cannot reliably use cloud-based AI learning platforms.
 
-- 🧠 Generic Responses
-- General-purpose AI assistants may provide answers without grounding them in the student's actual textbook or study material.
+- 🧠 Generic Responses : General-purpose AI assistants may provide answers without grounding them in the student's actual textbook or study material.
 
-- 📚 Lack of Document-Centric Learning
-- Many platforms don't provide a unified environment for uploading, understanding, remembering, and learning from personal study  materials.
+- 📚 Lack of Document-Centric Learning : Many platforms don't provide a unified environment for uploading, understanding, remembering, and learning from personal study  materials.
 
-- 🔄 Loss of Learning Context
-- Conversations may not maintain meaningful context across study sessions.
-
+- 🔄 Loss of Learning Context : Conversations may not maintain meaningful context across study sessions.
 
 ---
 
