@@ -393,7 +393,7 @@ The Flask backend will automatically communicate with the local model.
 
 - Shrikant.M.B - Backend & System Architecture [https://github.com/smb9-4]
 - Sujan.P.R - UI/UX & Frontend Design [https://github.com/sujanpronimath5-dot]
-- Niharika - Professor Module Developer [https://github.com/Niharika-A-S]
+- Niharika A S - Professor Module Developer [https://github.com/Niharika-A-S]
 - Shreya B J - Student Module Developer [https://github.com/ShreyaBJadhav]
 
 ---
