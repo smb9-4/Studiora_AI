@@ -219,8 +219,7 @@ Studiora AI can:
 | PDF | ✅ Supported |
 | DOCX | ✅ Supported |
 | TXT | ✅ Supported |
-| PPTX | 🔜 Planned |
-| Images / OCR | 🔜 Planned |
+| Images | ✅ Planned |
 | Scanned Notes | 🔜 Planned |
 
 ---
