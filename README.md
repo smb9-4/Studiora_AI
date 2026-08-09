@@ -9,6 +9,14 @@
 
 ---
 
+## 📝 Problem Statement
+
+Rural students often face limited or no access to reliable internet connectivity and digital learning resources. This creates a significant gap in access to modern educational tools, personalized guidance, and quality study materials. Students may have textbooks and notes available, but lack the digital knowledge and infrastructure required to effectively use online learning platforms and AI-based educational resources.
+
+Studiora AI aims to bridge this digital and educational gap by providing an offline-first AI learning environment that allows students to learn from their own textbooks and study materials, interact with an AI tutor, generate useful learning resources, and continue learning without depending continuously on internet connectivity.
+
+---
+
 ## 📖 Overview
 
 Studiora AI is an intelligent educational platform designed to bridge the gap between traditional learning and Artificial Intelligence.
@@ -232,6 +240,16 @@ StudioraAI/
 
 ---
 
+## 💾 System Requirements
+
+| Tier | Specs |
+|------|-------|
+| **Minimum** | Windows 10 / Linux · Intel i5 8th Gen or Ryzen 5 · 8 GB RAM · 10 GB free storage |
+| **Recommended** | Intel i7 / Ryzen 7 · NVIDIA RTX 3060+ · 16 GB RAM · SSD · CUDA support |
+| **Best Experience** | RTX 4050+ · 32 GB RAM · NVMe SSD |
+
+---
+
 ## ⚙️ Installation
 
 **1. Clone the repository**
@@ -256,11 +274,6 @@ Linux / Mac:
 ```bash
 python -m venv venv
 source venv/bin/activate
-```
-
-**4. Install dependencies**
-```bash
-pip install -r requirements.txt
 ```
 
 ---
@@ -299,16 +312,6 @@ ollama serve
 ```
 
 The Flask backend will automatically communicate with the local model.
-
----
-
-## 💾 System Requirements
-
-| Tier | Specs |
-|------|-------|
-| **Minimum** | Windows 10 / Linux · Intel i5 8th Gen or Ryzen 5 · 8 GB RAM · 10 GB free storage |
-| **Recommended** | Intel i7 / Ryzen 7 · NVIDIA RTX 3060+ · 16 GB RAM · SSD · CUDA support |
-| **Best Experience** | RTX 4050+ · 32 GB RAM · NVMe SSD |
 
 ---
 
@@ -354,9 +357,12 @@ The Flask backend will automatically communicate with the local model.
 ---
 
 
-## 📜 License
+## 🤝 Team Members
 
-This project is released under the [MIT License](LICENSE).
+Shrikant.M.B - 
+Sujan.P.R - 
+Niharika - 
+Shreya B J - 
 
 ---
 
