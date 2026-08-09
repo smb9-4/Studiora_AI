@@ -9,6 +9,16 @@
 
 ---
 
+## 📖 Overview
+
+Studiora AI is an intelligent educational platform designed to bridge the gap between traditional learning and Artificial Intelligence.
+
+Students can upload textbooks, notes, and academic materials, ask contextual questions, and generate summaries and study resources. Professors can manage learning materials, monitor student activities, and interact with an AI assistant designed specifically for educators.
+
+The platform is built entirely in Python using Flask and supports both online and offline AI models.
+
+---
+
 ## 📝 Problem Statement
 
 Rural students often face limited or no access to reliable internet connectivity and digital learning resources. This creates a significant gap in access to modern educational tools, personalized guidance, and quality study materials. Students may have textbooks and notes available, but lack the digital knowledge and infrastructure required to effectively use online learning platforms and AI-based educational resources.
@@ -39,15 +49,6 @@ Studiora AI aims to bridge this digital and educational gap by providing an offl
 
 ---
 
-## 📖 Overview
-
-Studiora AI is an intelligent educational platform designed to bridge the gap between traditional learning and Artificial Intelligence.
-
-Students can upload textbooks, notes, and academic materials, ask contextual questions, and generate summaries and study resources. Professors can manage learning materials, monitor student activities, and interact with an AI assistant designed specifically for educators.
-
-The platform is built entirely in Python using Flask and supports both online and offline AI models.
-
----
 
 ## 🏗️ System Architecture
 
